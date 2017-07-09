@@ -1,0 +1,146 @@
+<html>
+<head>
+	<title>Filpgame</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="./css/index.css">
+	<script type="text/javascript" src="./js/jquery.min.js"></script>
+</head>
+	<style>
+		.back{
+			z-index: -1;
+			position: absolute;
+			width: 123px;/*492/4=123还有边框492+8=500*/
+		}
+		.btn,.newbtn{
+			margin-top: 20px;
+			width: 100px;
+			border:1px solid #fff;
+			background: green;
+			padding: 10px;
+			color: #fff;
+			cursor: pointer;
+		}
+		.all h1{
+			text-align: center;
+			padding: 20px 0;
+		}
+	</style>
+<body>
+	<div class="all">
+		<h1>翻牌记忆游戏</h1>
+		<ul id="grid">
+			
+		</ul>
+	<!-- <input type="button" id="btn" value="开始" onclick="settime(this)" class="newbtn"/>    -->
+	<button class="btn">重新开始</button>
+	</div>
+	<script type="text/javascript">
+		function rand(m) {
+			
+		    var randArr = [];
+		    for(var j = 0; j < 2;j++){
+			    for (var i = 0; i < m; i++) {
+			    	randArr.push(i)
+			    }
+		    }
+		    random(randArr)
+		    arrs(4, randArr)
+		}
+		function random(data){
+			//随机打乱数组
+		   	for(var i = data.length-1; i >=0; i--){
+		        var randomIndex = Math.floor(Math.random()*(i+1)); 
+		        var itemAtIndex = data[randomIndex]; 
+		        data[randomIndex] = data[i]; 
+		        data[i] = itemAtIndex;
+
+		    }
+		} 
+			
+		function arrs(n,data){
+		    //生成坐标二维数组
+			var arr = [];
+			for (var i = 0; i < n; i++){
+				arr[i] = [];
+				for(var j = 0; j < n; j++){
+					arr[i].push(j);
+				}
+			}
+			//把打乱的数组放入二维数组里
+			var i = 0;
+			var res = arr.map(function(ba){         
+			  return ba.map(function(bb){             
+			       i++
+			       return data[i-1]         
+			   });
+			});
+			img(res)
+		}
+
+		function img(resdata){
+			//根据坐标显示图片
+			var newImg = [];
+			for(var i = 0; i < resdata.length; i++){
+				for(var j = 0; j < resdata[i].length;j++){
+ 					newImg.push(  resdata[i][j]);
+				}
+			}
+			for (var i = 0; i < newImg.length; i++) {
+				var str = "<li value="+newImg[i]+">"+ i +"</li>";
+				$("#grid").append(str);
+				$('li:eq('+ i +')').html("<div class='pai'><div class='back' ><img src='./image/" + newImg[i] + ".jpg' width='100%'></div><div class='front'><img src='./image/all.jpg' width='100%'></div></div>");
+			};
+		}
+		
+		
+		function dian(){
+				var  count = 0;
+				var before = null;
+				var beforeIndex = null;
+				$('body').on('click','li',function(){ //规定只能添加到li子元素上的事件
+					var index = $(this).index();  //相对于同胞元素的索引。对应的是哪个li
+
+					var backIndex = $(this).attr("value");    //value存的是图片，图片是随机的，用于后面判断是否连续点击了位置不同的两张相同的图片。
+					if(before === null && beforeIndex === null){  //before代表前面点得那一个，都为空，说明之前没点过
+						before = backIndex;  //开始点得是第一个
+						beforeIndex = index;
+						$('li:eq('+ index +') .back').css('z-index','2')  //把那个li上的图片显示
+					}else{//否则，之前已经点过图片了
+						$('li:eq('+ index +') .back').css('z-index','2')//把点得那张显示
+						if(index == beforeIndex){ //如果点还是之前那个li是之前点过的，返回false
+							return false;
+						}
+						if(before == backIndex){  //
+							$('li:eq('+ beforeIndex +') .back').css('z-index','2')
+							setTimeout("$('li:eq("+ index +") .back').css('z-index','2')",1000)
+							$('li:eq('+ beforeIndex +') .pai').hide() 
+							$('li:eq('+ index +') .pai').hide()   //前后点的不是同一张，但图片[即value值]一样，则隐藏，会变白
+							count++
+							before = null;    //置空，确定其它图片是否连续点的两张都一样。
+							beforeIndex = null;
+						}else{//两次点的图片不是同一张，value值也不同，则之前点的和现在点的都放在后面
+							
+							$('li:eq('+ index+') .back').css('z-index','2');
+							 setTimeout('$("li:eq('+ beforeIndex +') .back").css("z-index","-1"); $("li:eq('+ index+') .back").css("z-index","-1")',500);//把图片置于后面，前面的显示
+							before = null;
+							beforeIndex = null;
+						}
+						 
+					}
+					if(count == 8){
+						alert('success!');
+					}
+				});
+		}
+
+		// 刷新页面
+		function refresh(){
+			window.location.reload();
+		}
+			 
+		dian()
+		rand(8)
+		$('.btn').on('click',refresh);
+	</script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+*{
+	padding:0;
+	margin:0;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box; /* Firefox */
+	-webkit-box-sizing:border-box; /* Safari */
+	outline-style: none;
+	list-style-type: none;
+}
+.all{
+	width: 500px;
+	height: 500px;
+	margin:0 auto;
+	margin-top: 20px;
+}
+
+.all ul li{
+	width:25%;
+	height: 25%;
+	border:1px solid #000;
+	margin-left: -1px;
+	margin-top: -1px;
+	float: left;
+}

@@ -1,0 +1,163 @@
+<html>
+	<head>
+		<title>记忆游戏</title>
+		<meta charset="utf-8">
+		<script type="text/javascript" src = "./js/jquery.min.js"></script>
+	</head>
+	<style type="text/css">
+		*{
+			padding: 0;
+			margin:0;
+			box-sizing: border-box;
+			list-style: none;
+		}
+		body{
+			padding-top:60px; 
+		}
+		.container{
+			width: 520px;
+			height: 520px;
+			border:1px solid #000;
+			margin:0 auto;
+		}
+		 
+		.row{
+			overflow: hidden;
+			width: 100%;
+			height: 25%;
+		}
+		.row span {
+			display: inline-block;
+			width: 25%;
+		}
+		.row img {
+			width: 100%;
+		}
+		.btn,.newbtn{
+			margin-top: 20px;
+			width: 100px;
+			border:1px solid #fff;
+			background: green;
+			padding: 10px;
+			color: #fff;
+			cursor: pointer;
+		}
+		.conter{
+			text-align: center;
+			padding: 20px 0;
+		}
+	</style>
+	<body>
+		<h1 class="conter">记忆游戏</h1>
+		<div class="container">
+		</div>
+		<div class="conter"><button class="btn">重新开始</button></div>
+		<script type="text/javascript">
+
+			/**
+			 * 二维数组洗牌
+			 * @AuthorHTL
+			 * @DateTime  2017-02-23T14:20:09+0800
+			 */
+			function shuffle(){
+				var newArr = []
+				for(var i = 0; i < gameSize * gameSize / 2; i++){
+					newArr.push(i);
+					newArr.push(i);
+				}
+				var count = 0;
+				var randomArr = [];
+				while(count < newArr.length){
+					var index = Math.floor(Math.random() * (newArr.length));
+					randomArr.push(newArr[index])
+					newArr.splice(index,1);
+				}
+				var twoArr = [];
+				while(randomArr.length){
+					twoArr.push(randomArr.splice(0, gameSize))
+				}
+				return twoArr
+			}
+			
+			
+			/**
+			 * 通过二维数组显示对应图片
+			 * @AuthorHTL
+			 * @DateTime  2017-02-23T14:46:19+0800
+			 * @param     {Array}   arr 二维数组
+			 */
+			function showGameUI(arr){
+				for (var i = 0; i < gameSize; i++) {
+					var str = "<div class='row' >"
+					for (var j = 0 ; j < gameSize ; j++) {
+						str += "<span class='img'><img src =./image/" +arr[i][j]+ ".jpg value="+arr[i][j]+"></span>";
+					};
+					str += "</div>";
+					$('.container').append(str);
+				};
+			}
+
+			/**
+			 * 初始翻转状态0表示盖着， 1表示翻开，-1表示销毁
+			 * @AuthorHTL
+			 * @DateTime  2017-02-24T10:59:27+0800
+			 */
+			function initialState() {
+				var stateArr = []
+				for(var i = 0; i < gameSize; i++){
+					stateArr.push(new Array(gameSize).fill(0));
+				}
+				return stateArr;
+			}
+
+
+			function initialAndBindClick() {
+				$('img').attr('src','./image/all.jpg');
+				$('body').on('click', '.img', function(){
+					var row = $(this).parent('.row').index();
+					var column = $(this ).index();
+					if(beforePos.row == row && beforePos.col == column  ){
+						return false;
+					}
+					stateArr[row][column] = 1;
+					$(this).find('img').attr('src', './image/' + gameMap[row][column] + '.jpg');
+					clickCount++;
+					if(clickCount >= 2){
+						if(gameMap[beforePos.row][beforePos.col] ===  gameMap[row][column]){
+							stateArr[row][column] = -1;
+							stateArr[beforePos.row][beforePos.col] = -1;
+							$('.row:eq('+ beforePos.row +')').find('img:eq('+ beforePos.col +')').hide();
+							$('.row:eq('+ row +')').find('img:eq('+ column +')').hide();
+							count ++;
+						} else{
+							 setTimeout("$('.row:eq("+ row +")').find('img:eq("+ column +")').attr('src','./image/all.jpg');$('.row:eq("+ beforePos.row +")').find('img:eq("+ beforePos.col +")').attr('src','./image/all.jpg')",500)
+							clickCount = 0;
+						}
+					} else {
+						// 保存上一个地址
+						beforePos["row"] = row;
+						beforePos["col"] = column;
+					}
+					if(count == 8){
+						alert('success!')
+					}
+				})
+			}
+			// 刷新页面
+			function refresh(){
+				window.location.reload();
+			}
+			
+			var count = 0
+			var gameSize = 4;
+			var clickCount = 0;
+			var beforePos = {};
+			var gameMap = shuffle();
+			showGameUI(gameMap);
+			var stateArr = initialState();
+			initialAndBindClick();
+			$('.btn').on('click',refresh);
+			 
+		</script>
+	</body>
+	</html>	 

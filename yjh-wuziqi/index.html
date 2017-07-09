@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Gobang</title>
+		<link rel="stylesheet" href="bootstrap.min.css">
+		<script src="jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+		<style>
+			.gobang-container {
+				margin: 40px auto;
+				position: relative;
+			}
+			
+			canvas#id_gobang_board {
+				box-shadow: 0 0 5px #AAA;
+				cursor: pointer;
+			}
+			
+/*			.detail {
+				margin: 10px auto;
+				box-shadow: 0 0 5px #AAA;
+				padding: 10px;
+				width: 400px;
+				border-radius: 6px;
+				text-align: center;
+				cursor: pointer;
+			}*/
+			
+			.indicator {
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 6px;
+				height: 6px;
+				border-radius: 50%;
+				display: inline-block;
+				background-color: #f80;
+			}
+			
+/*			.modal-open> .modal-backdrop {
+				z-index: 8000;
+			}
+			
+			.modal {
+				z-index: 8080;
+			}*/
+		</style>
+	</head>
+
+	<body>
+		<div class="container">
+			<div id="gobang_container" class="gobang-container"></div>   
+			<div style="width:420px;margin: 0px auto;">
+				<button type="button" class="btn btn-success" data-toggle="modal" data-target=".menu" style="width: 200px;margin-right: 20px;float: left;">菜单
+				</button>
+				<button type="button" class="btn btn-success id_start_game" style="width: 200px;">重新开始
+				</button>
+			</div>
+			
+			<div class="modal fade menu">
+				<div class="modal-dialog" role="dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<div class="modal-title">
+								请选择游戏模式
+							</div>
+						</div>
+						<div class="modal-body">
+							<div class="">
+								<span style="vertical-align: middle;">先行执子：</span>
+								<div class="radio-inline">
+									<span><input type="radio" name="firstStart" id="OptionsA1" value="player"/>玩家</span>
+								</div>
+								<div class="radio-inline">
+									<span><input type="radio" name="firstStart" id="OptionsA2" value="ai"
+                                                 checked="checked"/>电脑</span>
+								</div>
+								<div class="checkbox-inline" style="margin-left: 20px;">
+									<span><input type="checkbox" id="OptionsB1" value=""
+                                                disabled="disabled" />玩家自由对战</span>
+								</div>
+							</div>
+							<br/>
+							<div class="">
+								<span style="vertical-align: middle;">先行执色：</span>
+								<div class="radio-inline">
+									<span><input type="radio" name="firstColor" id="OptionsC1" value="white"/>白子</span>
+								</div>
+								<div class="radio-inline">
+									<span><input type="radio" name="firstColor" id="OptionsC2" value="black"
+                                                 checked="checked"/>黑子</span>
+								</div>
+							</div>
+							<br/>
+							<span id="gameState" class="text-success">游戏模式：电脑执黑先行</span>
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-default" data-dismiss="modal">取消</button>
+							<button class="btn btn-success id_start_game" data-dismiss="modal">新的游戏</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="showResult" class="modal fade result" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-sm">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<div class="modal-title"> </div>
+						</div>
+						<div class="modal-body"> </div>
+					</div>
+				</div>
+			</div>
+			<script src="js/gobang.core1.js" type="text/javascript" charset="utf-8"></script>
+			<script src="js/gobang.page1.js" type="text/javascript" charset="utf-8"></script>
+		</div>
+	</body>
+
+</html>
