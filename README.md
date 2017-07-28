@@ -2,10 +2,10 @@
 
 点击体验:[http://yujihang.com/project2-game/index.html](http://yujihang.com/project2-game/index.html)
 
-## 项目简述：
+## 项目简述
 实现了个人比较喜欢的一些小游戏，包括2048、五子棋、翻拍游戏
 
-## 项目职责：
+## 项目职责
 
 ### 五子棋游戏
 利用JavaScript、CSS、HTML、jQuery、bootstrap等相关知识完成的五子棋游戏，其包含两种模式，一种是玩家自由对战模式，另一种是玩家对战电脑模式。
